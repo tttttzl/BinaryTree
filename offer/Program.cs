@@ -176,6 +176,10 @@ namespace offer
         }
     }
 
+    /// <summary>
+    /// 节点类
+    /// </summary>
+
     public class TreeNode
     {
         public int Data = 0;
