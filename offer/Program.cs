@@ -177,7 +177,7 @@ namespace offer
     }
 
     /// <summary>
-    /// 节点类
+    /// 节点类--
     /// </summary>
 
     public class TreeNode
