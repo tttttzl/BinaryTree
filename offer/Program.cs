@@ -15,14 +15,24 @@ namespace offer
             BTree btree = new BTree();
             for(int i = 0;i<data.Count();i++)
             btree.AddNode(ref node,data[i]);
-            Console.WriteLine("前序遍历");
-            btree.PreOut(node);
-            Console.WriteLine("删除节点");
-            btree.DeleNode(ref node, 20);
-            Console.WriteLine("前序遍历");
-            btree.PreOut(node);
-            Console.WriteLine("查找某数");
-            btree.Search(node,20);           
+
+            //Console.WriteLine("递归中序遍历");
+            //btree.MidOut(node);
+            //Console.WriteLine("非递归中序遍历");
+            //btree.MidOut2(node);
+
+            //Console.WriteLine("递归中序遍历");
+            //btree.PreOut(node);
+            //Console.WriteLine("非递归中序遍历");
+            //btree.PreOut2(node);
+
+            Console.WriteLine("递归中序遍历");
+            btree.LastOut(node);
+            Console.WriteLine("非递归中序遍历");
+            btree.LastOut2(node);
+
+            Console.WriteLine("完成遍历");
+                 
             Console.ReadKey();
         }
     }
@@ -143,7 +153,26 @@ namespace offer
             else
                 return;           
         }
+        //前序非递归遍历
+        public void PreOut2(TreeNode node)
+        {
+            Stack<TreeNode> stack = new Stack<TreeNode>();
 
+            while (stack.Count() != 0 || node != null)
+            {
+                while (node != null)
+                {
+                    Console.WriteLine(node.Data);
+                    stack.Push(node);
+                    node = node.left;
+                }
+                if (stack.Count() != 0)
+                {
+                    node = stack.Pop();
+                    node = node.right;
+                }
+            }
+        }
         //前序遍历
         public void PreOut(TreeNode node)
         {
@@ -156,6 +185,26 @@ namespace offer
             else
                 return;
         }
+        //非递归中序遍历
+        public void MidOut2(TreeNode node)
+        {
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+
+            while (stack.Count() != 0 || node != null)
+            {
+                while (node != null)
+                {
+                    stack.Push(node);
+                    node = node.left;
+                }
+                if (stack.Count() != 0)
+                {
+                    node = stack.Pop();
+                    Console.WriteLine(node.Data);
+                    node = node.right;
+                }
+            }
+        }
         //中序遍历
         public void MidOut(TreeNode node)
         {
@@ -164,6 +213,37 @@ namespace offer
             Console.WriteLine(node.Data);
             if (node.right != null)
                 MidOut(node.right);
+        }
+
+        //后序非递归遍历(这里会涉及到一个重复遍历右节点的操作所以需要一个pass来记录遍历过的节点)
+        public void LastOut2(TreeNode node)
+        {
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+            TreeNode pass = new TreeNode(0);
+
+            while (stack.Count() != 0 || node != null)
+            {
+                while (node != null)
+                { 
+                    stack.Push(node);
+                    node = node.left;
+                }
+                if (stack.Count() != 0)
+                {
+                    node = stack.Peek();
+
+                    if (node.right != null && node.right != pass)
+                    {
+                        node = node.right;
+                    }
+                    else
+                    {   
+                        Console.WriteLine(stack.Pop().Data);
+                        pass = node;
+                        node = null;
+                    }
+                }
+            }
         }
         //后续遍历
         public void LastOut(TreeNode node)
