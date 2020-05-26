@@ -16,6 +16,15 @@ namespace offer
             for(int i = 0;i<data.Count();i++)
             btree.AddNode(ref node,data[i]);
 
+            Console.WriteLine("叶子节点个数");
+            Console.WriteLine(btree.GetYeziNode(node));
+
+            Console.WriteLine("最大深度");
+            Console.WriteLine(btree.GetMaxHight(node));
+
+            Console.WriteLine("最小深度");
+            Console.WriteLine(btree.GetMinHight(node));
+
             //Console.WriteLine("递归中序遍历");
             //btree.MidOut(node);
             //Console.WriteLine("非递归中序遍历");
@@ -26,10 +35,10 @@ namespace offer
             //Console.WriteLine("非递归中序遍历");
             //btree.PreOut2(node);
 
-            Console.WriteLine("递归中序遍历");
-            btree.LastOut(node);
-            Console.WriteLine("非递归中序遍历");
-            btree.LastOut2(node);
+            //Console.WriteLine("递归中序遍历");
+            //btree.LastOut(node);
+            //Console.WriteLine("非递归中序遍历");
+            //btree.LastOut2(node);
 
             Console.WriteLine("完成遍历");
                  
@@ -42,7 +51,7 @@ namespace offer
         //public TreeNode root = null;
 
         //添加节点
-        public void AddNode(ref TreeNode node,int data)
+        public void AddNode(ref TreeNode node, int data)
         {
             //先判断是不是空，是空就直接加进去
             if (node == null)
@@ -56,23 +65,23 @@ namespace offer
                 //比当前节点小就去左
                 if (data < node.Data)
                 {
-                    AddNode(ref node.left,data);
+                    AddNode(ref node.left, data);
                 }
                 //比当前节点大就去右边
                 else
                 {
                     AddNode(ref node.right, data);
                 }
-            }     
+            }
         }
 
         //遍历查找某数
-        public TreeNode Search(TreeNode node,int number)
+        public TreeNode Search(TreeNode node, int number)
         {
             //对比当前节点数据
             //大了就去左边，小了就去右边
             if (node != null)
-            {              
+            {
                 if (node.Data > number)
                 {
                     Console.WriteLine("大了");
@@ -121,7 +130,7 @@ namespace offer
                                 if (node.right == null && node.left == null)
                                 {
                                     root.Data = node.Data;
-                                    DeleNode(ref root.right,node.Data);
+                                    DeleNode(ref root.right, node.Data);
                                     return;
                                 }
                                 else if (node.right == null && node.left != null)
@@ -151,7 +160,7 @@ namespace offer
                 }
             }
             else
-                return;           
+                return;
         }
         //前序非递归遍历
         public void PreOut2(TreeNode node)
@@ -224,7 +233,7 @@ namespace offer
             while (stack.Count() != 0 || node != null)
             {
                 while (node != null)
-                { 
+                {
                     stack.Push(node);
                     node = node.left;
                 }
@@ -237,7 +246,7 @@ namespace offer
                         node = node.right;
                     }
                     else
-                    {   
+                    {
                         Console.WriteLine(stack.Pop().Data);
                         pass = node;
                         node = null;
@@ -254,6 +263,40 @@ namespace offer
                 LastOut(node.right);
             Console.WriteLine(node.Data);
         }
+
+        //寻找最小深度
+        public int GetMinHight(TreeNode node)
+        {
+            if (node == null)
+                return 0;
+            if (node.left == null && node.right == null)
+                return 1;
+            if (node.left == null)
+                return GetMinHight(node.right) + 1;
+            if (node.right == null)
+                return GetMinHight(node.left) + 1;
+
+            return Math.Min(GetMinHight(node.left), GetMinHight(node.right)) + 1;
+        }
+
+        //寻找最大深度
+        public int GetMaxHight(TreeNode node)
+        {
+            if (node == null)
+                return 0;
+            return Math.Max(GetMaxHight(node.left), GetMaxHight(node.right)) + 1;
+        }
+
+        //寻找叶子节点个数
+        public int GetYeziNode(TreeNode node)
+        {
+            if (node == null)
+                return 0;
+            if (node.left == null && node.right == null)
+                return 1;
+            return GetYeziNode(node.left) + GetYeziNode(node.right);
+        }
+
     }
 
     /// <summary>
