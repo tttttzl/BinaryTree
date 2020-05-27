@@ -9,29 +9,33 @@ namespace offer
     {
         static void Main(string[] args)
         {
-            TreeNode node = null; 
-            int[] data = new int[10]{50,30,66,100,20,40,25,28,10,4};
+            Stack<int> stack = new Stack<int>();
 
             BTree btree = new BTree();
-            for(int i = 0;i<data.Count();i++)
-            btree.AddNode(ref node,data[i]);
+            TreeNode node = btree.ReCreatBTree(new int[] { 1,2,3,4,5,6},new int[] {6,5,4,3,2,1},0,0,6); 
+            //int[] data = new int[10]{50,30,66,100,20,40,25,28,10,4};
 
-            Console.WriteLine("叶子节点个数");
-            Console.WriteLine(btree.GetYeziNode(node));
 
-            Console.WriteLine("最大深度");
-            Console.WriteLine(btree.GetMaxHight(node));
+            //BTree btree = new BTree();
+            //for(int i = 0;i<data.Count();i++)
+            //btree.AddNode(ref node,data[i]);
 
-            Console.WriteLine("最小深度");
-            Console.WriteLine(btree.GetMinHight(node));
+            //Console.WriteLine("叶子节点个数");
+            //Console.WriteLine(btree.GetYeziNode(node));
+
+            //Console.WriteLine("最大深度");
+            //Console.WriteLine(btree.GetMaxHight(node));
+
+            //Console.WriteLine("最小深度");
+            //Console.WriteLine(btree.GetMinHight(node));
 
             //Console.WriteLine("递归中序遍历");
             //btree.MidOut(node);
             //Console.WriteLine("非递归中序遍历");
             //btree.MidOut2(node);
 
-            //Console.WriteLine("递归中序遍历");
-            //btree.PreOut(node);
+            Console.WriteLine("递归中序遍历");
+            btree.PreOut(node);
             //Console.WriteLine("非递归中序遍历");
             //btree.PreOut2(node);
 
@@ -45,7 +49,6 @@ namespace offer
             Console.ReadKey();
         }
     }
-
     public class BTree
     {
         //public TreeNode root = null;
@@ -75,6 +78,33 @@ namespace offer
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pre"></前序遍历>
+        /// <param name="mid"></中序遍历>
+        /// <param name="P_Start"></前序当前树开始下标>
+        /// <param name="M_Start"></中序当前树开始下标>
+        /// <param name="Length"></树节点数，用于循环>
+        /// <returns></returns>
+        public TreeNode ReCreatBTree(int[] pre,int[] mid,int P_Start,int M_Start , int Length)
+        {
+            if (P_Start<0 || M_Start<0 || Length <= 0 )
+                return null;
+
+            TreeNode node = new TreeNode(pre[P_Start]);
+            for (int i = M_Start; i < M_Start+Length; i++)
+            {
+                if (mid[i] == node.Data)
+                {
+                    node.left = ReCreatBTree(pre, mid, P_Start + 1, M_Start,i-M_Start);
+                    node.right = ReCreatBTree(pre,mid, P_Start + 1+(i- M_Start),i+1,Length - 1 -(i - M_Start));
+                    break;
+                }
+            }
+
+            return node;
+        }
         //遍历查找某数
         public TreeNode Search(TreeNode node, int number)
         {
