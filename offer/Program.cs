@@ -12,13 +12,12 @@ namespace offer
             Stack<int> stack = new Stack<int>();
 
             BTree btree = new BTree();
-            TreeNode node = btree.ReCreatBTree(new int[] { 1,2,3,4,5,6},new int[] {6,5,4,3,2,1},0,0,6); 
-            //int[] data = new int[10]{50,30,66,100,20,40,25,28,10,4};
+            //TreeNode node = btree.ReCreatBTree(new int[] { 1,2,3,4,5,6},new int[] {6,5,4,3,2,1},0,0,6); 
+            int[] data = new int[10]{50,30,66,100,20,40,25,28,10,4};
+            TreeNode node = null;
 
-
-            //BTree btree = new BTree();
-            //for(int i = 0;i<data.Count();i++)
-            //btree.AddNode(ref node,data[i]);
+            for(int i = 0;i<data.Count();i++)
+            btree.AddNode(ref node,data[i]);
 
             //Console.WriteLine("叶子节点个数");
             //Console.WriteLine(btree.GetYeziNode(node));
@@ -35,7 +34,13 @@ namespace offer
             //btree.MidOut2(node);
 
             Console.WriteLine("递归中序遍历");
-            btree.PreOut(node);
+            btree.MidOut(node);
+
+            Console.WriteLine("删除");
+            btree.DeleNode(ref node, 20);
+
+            Console.WriteLine("递归中序遍历");
+            btree.MidOut(node);
             //Console.WriteLine("非递归中序遍历");
             //btree.PreOut2(node);
 
@@ -79,7 +84,7 @@ namespace offer
         }
 
         /// <summary>
-        /// 
+        /// 前序/中序  重构二叉树
         /// </summary>
         /// <param name="pre"></前序遍历>
         /// <param name="mid"></中序遍历>
@@ -102,9 +107,9 @@ namespace offer
                     break;
                 }
             }
-
             return node;
         }
+
         //遍历查找某数
         public TreeNode Search(TreeNode node, int number)
         {
@@ -153,24 +158,18 @@ namespace offer
                         unsafe
                         {
                             //保存当前节点
-                            TreeNode node = root;
+                            TreeNode node = root.left;
+                            
                             while (true)
                             {
                                 //找一个叶子节点
-                                if (node.right == null && node.left == null)
+                                if (node.right == null)
                                 {
                                     root.Data = node.Data;
-                                    DeleNode(ref root.right, node.Data);
-                                    return;
+                                    DeleNode(ref root.left, node.Data);
+                                    break;
                                 }
-                                else if (node.right == null && node.left != null)
-                                {
-                                    root.Data = node.Data;
-                                    DeleNode(ref root.right, node.Data);
-                                    return;
-                                }
-                                else
-                                    node = node.right;
+                                node = node.right;
                             }
                         }
 
